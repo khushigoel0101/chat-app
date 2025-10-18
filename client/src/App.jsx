@@ -3,14 +3,20 @@ import { Route, Routes} from 'react-router-dom'
 import Homepage from './pages/Homepage'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
+import {Toaster} from "react-hot-toast"
+import { Navigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext.jsx'
 
 const App = () => {
+  const {authUser} = useContext(AuthContext);
   return (
     <div className="bg-gray-950 bg-contain">
+      <Toaster />
       <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/' element={authUser ? <Homepage /> : <Navigate to="/login" />} />
+        <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
+        <Route path='/profile' element={authUser ?<ProfilePage /> :<Navigate to="/login" /> } />
       </Routes>
       
     </div>

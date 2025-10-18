@@ -4,7 +4,10 @@ import ChatContainer from '../components/ChatContainer';
 import RightSidebar from '../components/RightSidebar';
 
 const Homepage = () => {
-  const [selectedUser, setSelectedUser] = React.useState(null);
+
+  const {selectedUser} = useContext(ChatContext);
+
+  
 
   return (
     <div className="border w-full h-screen sm:px-[15%] sm:py-[5%]">
@@ -22,16 +25,11 @@ const Homepage = () => {
         />
 
         
-        <ChatContainer
-          selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
-        />
+        <ChatContainer />
 
         
         {selectedUser && (
           <RightSidebar
-            selectedUser={selectedUser}
-            setSelectedUser={setSelectedUser}
           />
         )}
       </div>
