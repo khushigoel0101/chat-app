@@ -12,7 +12,6 @@ createRoot(document.getElementById('root')).render(
       <ChatProvider>
         <App />
       </ChatProvider>
-    <App />
     </AuthProvider>
   </BrowserRouter>,
 )

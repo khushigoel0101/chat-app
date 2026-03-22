@@ -1,25 +1,24 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import assets from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import { useContext } from 'react';
 import { ChatContext } from '../../context/ChatContext';
 
 
-const Sidebar = () => {
+const Sidebar = ({ selectedUser, setSelectedUser }) => {
 
-  const {getUsers, users, selectedUser, setSelectedUser, unseenMessages, setUnseenMessages} = useContext(ChatContext);
+  const {getUsers, user, unseenMessages, setUnseenMessages} = useContext(ChatContext);
   const {logout, onlineUsers} = useContext(AuthContext);
 
-  const [input, setInput] = useContext(AuthContext);
+  const [input, setInput] = useState("");
 
   const navigate = useNavigate();
 
-  const filteredUsers = input ? users.filter((user)=> user.fullName.toLowerCase().includes(input.toLowerCase())) : users;
+  const filteredUsers = input ? user.filter((u)=> u.fullname.toLowerCase().includes(input.toLowerCase())) : user;
 
   useEffect(()=> {
       getUsers()
-  },[onlineUsers])
+  },[])
 
   return (
     <div
@@ -88,7 +87,7 @@ const Sidebar = () => {
               className="w-[35px] aspect-[1/1] rounded-full"
             />
             <div className="flex flex-col leading-5">
-              <p>{user.fullName}</p>
+              <p>{user.fullname}</p>
               {onlineUsers.includes(user._id) ? (
                 <span className="text-green-400 text-xs">Online</span>
               ) : (

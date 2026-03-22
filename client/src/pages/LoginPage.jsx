@@ -21,7 +21,7 @@ const LoginPage = () => {
     }
 
     login(currState === "Sign up" ? "signup" : "login", {
-      fullName,
+      fullname: fullName,
       email,
       password,
       bio,

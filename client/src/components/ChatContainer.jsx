@@ -1,12 +1,13 @@
-import React, { use, useEffect, useRef } from 'react'
-import assets, { messagesDummyData } from '../assets/assets'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import assets from '../assets/assets'
 import { formatMessageTime } from '../lib/utils'
 import { ChatContext } from '../../context/ChatContext'
 import { AuthContext }  from '../../context/AuthContext'
+import { toast } from 'react-hot-toast'
 
-const ChatContainer = () => {
+const ChatContainer = ({ selectedUser, setSelectedUser }) => {
 
-  const { messages, selectedUser, setSelectedUser, sendMessage, getMessages} = useContext(ChatContext);
+  const { messages, sendMessage, getMessages} = useContext(ChatContext);
   const { authUser, onlineUsers } = useContext(AuthContext);
 
    const scrollEnd = useRef()
@@ -33,6 +34,7 @@ const ChatContainer = () => {
       await sendMessage({image: reader.result})
       e.target.value = ""
     }
+    reader.readAsDataURL(file);
    }
 
    useEffect(()=> {
@@ -54,7 +56,7 @@ const ChatContainer = () => {
     <div className='flex items-center gap-3 py-3 mx-4 border-b border-stone-500'>
       <img src={selectedUser.profilePic || assets.avatar_icon } alt="" className='w-8 rounded-full' />
       <p className='flex-1 text-lg text-white flex items-center gap-2'> 
-        {selectedUser.fullName}
+        {selectedUser.fullname}
         {onlineUsers.includes(selectedUser._id) && <span className='w-2 h-2 rounded-full bg-green-500'></span>}
       </p>
       <img onClick={()=> setSelectedUser(null)} src={assets.arrow_icon} alt="" className='md:hidden max-w-7' />
@@ -68,7 +70,7 @@ const ChatContainer = () => {
             <img src={msg.image} alt="" className='max-w-[230px] border
             border-gray-700 rounded-lg overflow-hidden mb-8' />
           ): (
-            <p className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${msg.senderId === '680f50e4f103cd28382ecf9' ? 'rounded-br-none' : 'rounded-bl-none'}`}>{msg.text}</p>
+            <p className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${msg.senderId === authUser._id ? 'rounded-br-none' : 'rounded-bl-none'}`}>{msg.text}</p>
           )}
 
           <div className='text-center text-xs'>

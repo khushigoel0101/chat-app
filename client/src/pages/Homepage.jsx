@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Sidebar from '../components/Sidebar';
 import ChatContainer from '../components/ChatContainer';
 import RightSidebar from '../components/RightSidebar';
+import { ChatContext } from '../../context/ChatContext';
 
 const Homepage = () => {
 
-  const {selectedUser} = useContext(ChatContext);
+  const {selectedUser, setSelectedUser} = useContext(ChatContext);
 
   
 
@@ -25,12 +26,11 @@ const Homepage = () => {
         />
 
         
-        <ChatContainer />
+        <ChatContainer selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
 
         
         {selectedUser && (
-          <RightSidebar
-          />
+          <RightSidebar selectedUser={selectedUser} />
         )}
       </div>
     </div>

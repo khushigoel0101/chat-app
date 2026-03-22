@@ -1,12 +1,11 @@
-import React from 'react'
-import assets, { imagesDummyData } from '../assets/assets'
-import { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
+import assets from '../assets/assets'
 import { ChatContext } from '../../context/ChatContext'
 import { AuthContext } from '../../context/AuthContext'
 
 const RightSidebar = ({ selectedUser }) => {
 
-    const {selectedUser, messages} = useContext(ChatContext);
+    const {messages} = useContext(ChatContext);
     const {logout, onlineUsers} = useContext(AuthContext);
     const [msgImages, setMsgImages] = React.useState([])
 
@@ -16,7 +15,7 @@ const RightSidebar = ({ selectedUser }) => {
       setMsgImages(
         messages.filter((msg)=> msg.image).map((msg)=> msg.image)
       )
-    })
+    }, [messages])
 
   return selectedUser && (
     <div className={`bg-[#8185B2]/10 text-white w-full relative overflow-y-scroll ${selectedUser ? "max-md:hidden" : "" }`}>
@@ -25,7 +24,7 @@ const RightSidebar = ({ selectedUser }) => {
         className='w-20 aspect-[1/1] rounded-full' />
         <h1 className='px-10 text-xl font-medium mx-auto flex items-center gap-2'>
           {onlineUsers.includes(selectedUser._id) && <p className='w-2 h-2 rounded-full bg-green-500'></p>}
-          {selectedUser.fullName}</h1>
+          {selectedUser.fullname}</h1>
           <p className='px-10 mx-auto'>{selectedUser.bio}</p>
       </div>
 
@@ -33,7 +32,7 @@ const RightSidebar = ({ selectedUser }) => {
 
       <div className='px-5 text-xs'>
          <p>Media</p>
-         <div className='mt-2 mx-h-[200px] overflow-y-scroll grid grid-cols-2 pap-4 opacity-80'>
+         <div className='mt-2 max-h-[200px] overflow-y-scroll grid grid-cols-2 gap-4 opacity-80'>
           {msgImages.map((url, index)=>(
             <div key={index} onClick={()=> window.open(url)}
               className='cursor-pointer rounded'>
